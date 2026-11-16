@@ -49,3 +49,31 @@ QEMU's TCG does not.
 | `minivisor/entry.S` | VMLAUNCH helpers and the VM-exit stub |
 | `minivisor/guest16.S` | the real-mode guest of phase 2 |
 | `minivisor/vmx.h` | VMCS encodings, MSRs, VMX instruction wrappers |
+
+## Credits
+
+minivisor is new code, but it stands on the work of others:
+
+- **[Hypervisor From Scratch](https://github.com/SinaKarvandi/Hypervisor-From-Scratch)**
+  by Sina Karvandi and contributors (MIT), with the
+  [tutorial series](https://rayanfam.com/tutorials/) at rayanfam.com. Its
+  structure (VMXON → VMCS → launch → exits → EPT → hooks) is the structure
+  minivisor follows, and its MTF-based EPT hooks inspired the page watcher.
+- **[ksm](https://github.com/asamy/ksm)** by Ahmed Samy (GPLv2). The
+  subvert-the-running-system launch and the guest register frame in
+  `entry.S` follow the same approach as its `vmx.S`. No ksm code is copied.
+  That frame layout is the common convention also used by KVM.
+- **[Bochs](https://github.com/bochs-emu/Bochs)** by the Bochs project (LGPL),
+  whose software VMX/EPT emulation makes this runnable on any host, and whose
+  logs name the exact VM-entry check that failed. Used as a tool, not
+  redistributed.
+- **Intel® 64 and IA-32 Architectures Software Developer's Manual**, Vol. 3C
+  (VMX chapters and appendices), the reference for every VMCS encoding,
+  control bit and exit reason here.
+- **Joanna Rutkowska**, whose 2006 *Blue Pill* gave the name to virtualizing a
+  running system on the fly.
+- Written with help from Claude (Anthropic).
+
+## License
+
+MIT, see [LICENSE](LICENSE).
