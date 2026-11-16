@@ -1,0 +1,5 @@
+Hypervisor-From-Scratch/
+ksm/
+third_party/
+*.log
+minivisor/build/

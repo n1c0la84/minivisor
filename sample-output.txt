@@ -1,0 +1,48 @@
+========================================================================
+                        Bochs x86 Emulator 3.1
+             Built from GitHub snapshot on August 23, 2026
+                Timestamp: Sun Aug 23 07:15:00 CEST 2026
+========================================================================
+
+[host] minivisor: bare-metal VT-x demo
+[host] IA32_VMX_BASIC = d810000000002b (VMCS revision 2b)
+[host] VMXON ok, region at 10d000
+[host] IA32_VMX_EPT_VPID_CAP = f0106334141
+[host] EPT: 4 GiB identity map, page 105000 is write-protected
+[host] VMLAUNCH: the code calling us becomes the guest
+[guest] hello from VMX non-root mode; this is still kmain()
+[guest] cpuid(0) vendor = "GenuineIntel"
+[guest] cpuid(40000000) vendor = "MiniVisorHV!"
+[guest] cpuid(1).ecx: hypervisor bit = 1, VMX bit = 0
+[host] VMCALL ping (rbx=2a)
+[guest] hypercall ping -> 1337
+[guest] executing HLT with interrupts off...
+[host] guest executed HLT (with IF=0 it would hang forever natively); skipping
+[guest] ...and we are still alive
+[guest] read watched page: 0 (no exit, page is readable)
+[guest] writing 3 bytes to the watched page
+[host] EPT violation: write at GPA 105000, RIP 929f
+[host] MTF: write retired, page re-protected ([105000] = 41)
+[host] EPT violation: write at GPA 105001, RIP 92a6
+[host] MTF: write retired, page re-protected ([105001] = 42)
+[host] EPT violation: write at GPA 105002, RIP 92ad
+[host] MTF: write retired, page re-protected ([105002] = 43)
+[guest] asking the hypervisor to leave
+[host] VMCALL devirtualize: VMXOFF, handing the CPU back
+[native] devirtualized. Same queries, no hypervisor:
+[native] cpuid(40000000) vendor = "@...@......."
+[native] watched page now: ABC
+[native] VM exits handled: CPUID=3 HLT=1 VMCALL=2 IO=373 MTF=3 EPT=3
+
+[host] === phase 2: a separate real-mode VM ===
+[host] VM2: 242 bytes of code, 64 KiB RAM at host 11d000, nothing else mapped
+[vm2]   real-mode guest up, CS:IP=0000:1000, 64 KiB of RAM
+[host] VM2 hypercall: guest reports 5050
+[vm2]   writing to 0xb8000, which has no RAM behind it...
+[host] VM2 EPT violation (write GPA b8000): mapping host page 107000 there
+[vm2]   read back OK, the page exists now
+[vm2]   guest done, executing HLT
+[host] VM2 HLT: VM finished, VMXOFF
+[host] VM2 is gone. The page we demand-mapped at GPA b8000 holds "OK"
+[host] VM exits handled: HLT=1 VMCALL=1 IO=161 EPT=1
+[host] done.
